@@ -84,6 +84,15 @@ def evaluate_model_on_testset(model_dir, testset_directory):
     predictions = model.predict(data)
     predicted_indices = np.argmax(predictions, axis=1)
 
+    # Print average confidence score per class
+    class_names = {v: k for k, v in label_mappings.items()}
+    print("\nAverage confidence scores per class:")
+    for class_idx, class_name in sorted(class_names.items()):
+        avg_conf = predictions[:, class_idx].mean()
+        print(f"  {class_name}: {avg_conf:.2%}")
+    overall_avg = predictions.max(axis=1).mean()
+    print(f"  Overall (predicted class): {overall_avg:.2%}\n")
+
     # Calculate the test accuracy
     return accuracy_score(true_labels, predicted_indices)
 
