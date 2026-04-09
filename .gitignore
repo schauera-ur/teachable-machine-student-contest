@@ -1,0 +1,14 @@
+# this is a gitignore file
+# ignore the testset folder
+# also the trainset
+*.iml
+*.ipr
+*.iws
+*.xlsx
+.idea/
+.gradle/
+
+misc/
+converted_keras/
+final_testset/
+models/
