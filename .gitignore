@@ -12,3 +12,4 @@ misc/
 converted_keras/
 final_testset/
 models/
+.vscode/settings.json
