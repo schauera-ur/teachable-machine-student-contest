@@ -1,12 +1,11 @@
-# KI-Challenge der FIDS
-**Willkommen** zur **KI-Challenge** der Fakultät für Informatik & Data Science (FIDS) der Universität Regensburg (UR).
+# Girls Day – KI-Bildklassifikation 🎉
+**Willkommen** zum **Girls Day** am Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification der Universität Regensburg!
 
-**Datum:** 13. Februar 2026 <br>
-**Zeitraum der FIDS-KI-Challenge:** 9:00 - 12:30 Uhr <br>
-**Ort:** Stand 50 - Information Systems / Wirtschaftsinformatik B.Sc. / B.A. <br>
-[Übersicht der Stände (ab Seite 8)](https://www.regensburger-hochschultag.de/wp-content/uploads/2026/01/RHT_2026_Programmheft_Web.pdf)
+**Datum:** 23. April 2026 <br>
+**Beginn:** 14:00 Uhr <br>
+**Ort:** Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification, Universität Regensburg <br>
 
-**Preisverleihung:** Der Preis wird um **12:40 Uhr** an den **ersten Platz** im Leaderboard vergeben.
+**Preisverleihung:** Der Preis geht an den **ersten Platz** im Leaderboard am Ende des Workshops.
 
 <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -34,37 +33,40 @@
 
 ## Wie kannst du teilnehmen?
 
-**Merke dir dein Pseudonym**, um später zu sehen, ob du gewonnen hast!
+**Merke dir dein Pseudonym**, um später im Leaderboard nachzuschauen, wie gut deine KI abgeschnitten hat!
 
-## Wie funktioniert die KI-Challenge?
+## Wie funktioniert der Workshop?
 
-Trainiere dein eigenes KI-Modell und finde heraus wie genau es ist! 
-Nimm dazu Bilder von vier verschiedenen Gegenständen an unserem Stand auf und trainiere dein Modell mit diesen Bildern.
+Heute lernst du, wie eine KI Bilder erkennen kann – ganz ohne Programmierkenntnisse!
+
+1. **Bilder aufnehmen** – Fotografiere vier verschiedene Gegenstände mit der Webcam.
+2. **KI trainieren** – Lass die KI lernen, welcher Gegenstand welcher ist.
+3. **Modell testen** – Schau, wie gut deine KI auf neuen Bildern abschneidet.
+4. **Leaderboard** – Vergleiche deine Genauigkeit mit den anderen Teilnehmerinnen!
 
 ## Was kannst du gewinnen?
 
-Die Person mit der besten Genauigkeit erhält einen Gutschein.
+Die Teilnehmerin mit der besten Genauigkeit erhält einen kleinen Preis.
 
-## Welche Vorkenntnisse benötige ich?
+## Welche Vorkenntnisse brauche ich?
 
-Es ist ganz einfach und für die Teilnahme benötigst du keine Vorkenntnisse in KI oder Programmierung.
+**Keine!** Der Workshop ist für alle gedacht, die neugierig auf KI sind – egal ob du dich vorher schon damit beschäftigt hast oder nicht.
 
-## Was verstehe Ich unter Genauigkeit?
+## Was bedeutet Genauigkeit?
 
 Wir haben ungefähr 1000 Test-Bilder selbst aufgenommen.
-Deine Genauigkeit wird berechnet, indem die Anzahl der korrekt klassifizierten Bilder durch die Gesamtzahl der Test-Bilder geteilt wird.
+Deine Genauigkeit wird berechnet, indem die Anzahl der korrekt erkannten Bilder durch die Gesamtzahl der Test-Bilder geteilt wird.
 
-Eine Genauigkeit von 50% bedeutet, dass dein Modell 500 von 1000 Test-Bildern korrekt klassifiziert hat.
+Eine Genauigkeit von 50% bedeutet, dass deine KI 500 von 1000 Test-Bildern richtig zugeordnet hat.
 
 ## Was sagt meine Genauigkeit aus?
 
-Die Genauigkeit deines Modells ist in folgenden Bereichen ungefähr zu verorten:
-- **< 40%**: Gut gemacht! Du hast die Grundlagen der KI verstanden.
-- **40% - 50%**: Sehr gut! Du hast ein solides Verständnis für KI-Modelle.
-- **50% - 65%**: Hervorragend! Du bist ein echter KI-Enthusiast.
-- **> 65%**: Fantastisch! Du bist ein KI-Profi!
+- **< 40%**: Gut gemacht! Du hast die Grundlagen der KI kennengelernt.
+- **40% - 50%**: Sehr gut! Deine KI hat schon einiges gelernt.
+- **50% - 65%**: Hervorragend! Du hast ein echtes Gespür für KI-Modelle.
+- **> 65%**: Fantastisch! Du bist ein KI-Talent!
 
-## Danke für deine Teilnahme!
+## Danke für deinen Besuch!
 
-Wir hoffen, dass du Spaß an unserer Challenge hattest und freuen uns, dich an der FIDS für ein Studium begrüßen zu dürfen.
-Informiere dich doch gerne weiter über unsere Studiengänge auf unserer [Website](https://www.uni-regensburg.de/informatik-data-science/studieren/studieninteressierte).
+Wir freuen uns, dass du heute dabei bist, und hoffen, dass du Spaß hattest!
+Falls dich das Thema KI und Daten weiter interessiert, schau gerne auf unserer [Website](https://www.uni-regensburg.de/informatik-data-science/studieren/studieninteressierte) vorbei.
