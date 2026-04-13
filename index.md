@@ -2,7 +2,7 @@
 **Willkommen** zum **Girls Day** am Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification der Universität Regensburg!
 
 **Datum:** 23. April 2026 <br>
-**Beginn:** 14:00 Uhr <br>
+**Beginn:** 14:00 Uhr <br> 
 **Ort:** Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification, Universität Regensburg <br>
 
 **Preisverleihung:** Der Preis geht an den **ersten Platz** im Leaderboard am Ende des Workshops.
