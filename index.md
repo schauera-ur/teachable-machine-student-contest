@@ -5,8 +5,6 @@
 **Beginn:** 14:00 Uhr <br> 
 **Ort:** Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification, Universität Regensburg <br>
 
-**Preisverleihung:** Der Preis geht an den **ersten Platz** im Leaderboard am Ende des Workshops.
-
 <link rel="stylesheet" type="text/css" href="style.css">
 
 ## Leaderboard
