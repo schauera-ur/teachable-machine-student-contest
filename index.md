@@ -44,10 +44,6 @@ Heute lernst du, wie eine KI Bilder erkennen kann – ganz ohne Programmierkennt
 3. **Modell testen** – Schau, wie gut deine KI auf neuen Bildern abschneidet.
 4. **Leaderboard** – Vergleiche deine Genauigkeit mit den anderen Teilnehmerinnen!
 
-## Was kannst du gewinnen?
-
-Die Teilnehmerin mit der besten Genauigkeit erhält einen kleinen Preis.
-
 ## Welche Vorkenntnisse brauche ich?
 
 **Keine!** Der Workshop ist für alle gedacht, die neugierig auf KI sind – egal ob du dich vorher schon damit beschäftigt hast oder nicht.
