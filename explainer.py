@@ -64,7 +64,7 @@ def collect_images(folder="images"):
     return paths
 
 
-def explain_and_plot(img_path, model, class_names, num_samples=10000):
+def explain_and_plot(img_path, model, class_names, num_samples=1000):
     """Run LIME on one image and display the explanation."""
     # --- load & display-ready array ---
     image = Image.open(img_path).convert("RGB")
@@ -174,4 +174,4 @@ if __name__ == "__main__":
 
     for path in selected:
         print(f"\nExplaining: {path}")
-        explain_and_plot(path, model, class_names, num_samples=10000)
+        explain_and_plot(path, model, class_names, num_samples=1000)
