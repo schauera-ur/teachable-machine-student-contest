@@ -55,41 +55,63 @@ def collect_images(folder="images"):
 
 
 def find_last_spatial_layer(model):
-    """
-    Recursively scan the model tree and return (layer, outer_model_or_None)
-    for the last layer whose output shape is 4D with known spatial dimensions.
-    """
-    last = [None, None]
+    """Recursively scan the model tree and return the last layer with 4D spatial output."""
+    last = [None]
 
-    def scan(layers, outer=None):
+    def scan(layers):
         for layer in layers:
+            try:
+                shape = layer.output_shape
+                if isinstance(shape, (list, tuple)) and len(shape) == 4:
+                    h, w = shape[1], shape[2]
+                    if h is not None and w is not None and h > 1 and w > 1:
+                        last[0] = layer
+            except Exception:
+                pass
             if hasattr(layer, "layers"):
-                scan(layer.layers, outer=layer)
-            else:
-                try:
-                    shape = layer.output_shape
-                    if isinstance(shape, (list, tuple)) and len(shape) == 4:
-                        h, w = shape[1], shape[2]
-                        if h is not None and w is not None and h > 1 and w > 1:
-                            last[0] = layer
-                            last[1] = outer
-                except Exception:
-                    pass
+                scan(layer.layers)
 
     scan(model.layers)
-    return last[0], last[1]
+    return last[0]
+
+
+def find_path_to_layer(root_model, target_layer):
+    """
+    Locate target_layer anywhere in the model tree.
+
+    Returns (direct_parent, path) where:
+      - direct_parent: the sub-model whose .layers list directly contains target_layer
+      - path: list of (parent_model, child_index) from root_model down to direct_parent
+        (empty list when target_layer is a direct child of root_model)
+    Returns (None, None) if not found.
+    """
+    for i, layer in enumerate(root_model.layers):
+        if layer is target_layer:
+            return root_model, []
+        if hasattr(layer, "layers"):
+            direct_parent, sub_path = find_path_to_layer(layer, target_layer)
+            if direct_parent is not None:
+                return direct_parent, [(root_model, i)] + sub_path
+    return None, None
 
 
 def build_gradcam_forward(model):
     """
     Build a callable gradcam_forward(x) -> (conv_outputs, predictions).
 
-    Handles both flat models and nested sub-model architectures (e.g., Teachable
-    Machine wrapping MobileNetV2 in an inner Sequential/Functional model).
+    Works for arbitrarily nested sub-model architectures (e.g. Teachable Machine
+    wrapping MobileNetV2 inside one or more Sequential wrappers).
+
+    Strategy:
+      1. Locate the target layer and its direct parent sub-model.
+      2. Build a two-output feature_extractor on that parent:
+         parent.input -> [target.output, parent.output]
+      3. Build a recursive forward function that threads the call through
+         every nesting level by applying the pre/post layers at each level.
 
     Returns (gradcam_forward, target_layer_name).
     """
-    target_layer, outer_model = find_last_spatial_layer(model)
+    target_layer = find_last_spatial_layer(model)
 
     if target_layer is None:
         raise ValueError(
@@ -102,46 +124,34 @@ def build_gradcam_forward(model):
         f"output shape: {target_layer.output_shape}"
     )
 
-    if outer_model is not None:
-        # Target layer is inside a sub-model. Build a feature extractor on that
-        # sub-model, then manually thread the layers before/after it.
-        feature_extractor = tf.keras.Model(
-            inputs=outer_model.input,
-            outputs=[target_layer.output, outer_model.output],
-            name="gradcam_feature_extractor",
-        )
+    direct_parent, path = find_path_to_layer(model, target_layer)
+    if direct_parent is None:
+        raise ValueError(f"Layer '{target_layer.name}' could not be located in the model tree.")
 
-        outer_idx = next(
-            (i for i, l in enumerate(model.layers) if l is outer_model), None
-        )
-        if outer_idx is None:
-            raise ValueError("Sub-model not found among top-level layers.")
+    # feature_extractor lives at the level that directly holds target_layer,
+    # so target_layer.output IS in direct_parent's computation graph.
+    feature_extractor = tf.keras.Model(
+        inputs=direct_parent.input,
+        outputs=[target_layer.output, direct_parent.output],
+        name="gradcam_feature_extractor",
+    )
 
-        pre_layers = [
-            l for l in model.layers[:outer_idx]
-            if not isinstance(l, tf.keras.layers.InputLayer)
-        ]
-        post_layers = model.layers[outer_idx + 1:]
-
-        def gradcam_forward(x):
-            for layer in pre_layers:
+    # Recursive routing: at each nesting level apply pre/post layers around the
+    # next level's call, threading conv_out all the way back to the surface.
+    def apply_routing(level_idx, x):
+        if level_idx == len(path):
+            return feature_extractor(x)
+        parent, child_idx = path[level_idx]
+        for layer in parent.layers[:child_idx]:
+            if not isinstance(layer, tf.keras.layers.InputLayer):
                 x = layer(x)
-            conv_out, sub_out = feature_extractor(x)
-            y = sub_out
-            for layer in post_layers:
-                y = layer(y)
-            return conv_out, y
+        conv_out, y = apply_routing(level_idx + 1, x)
+        for layer in parent.layers[child_idx + 1:]:
+            y = layer(y)
+        return conv_out, y
 
-    else:
-        # Flat model: build a two-output Keras model directly.
-        grad_model = tf.keras.Model(
-            inputs=model.inputs,
-            outputs=[target_layer.output, model.output],
-            name="gradcam_model",
-        )
-
-        def gradcam_forward(x):
-            return grad_model(x)
+    def gradcam_forward(x):
+        return apply_routing(0, x)
 
     return gradcam_forward, target_layer.name
 
@@ -205,7 +215,7 @@ def make_overlay(img_array, heatmap, alpha=0.45, colormap="jet"):
         )
     ) / 255.0
 
-    cmap = cm.get_cmap(colormap)
+    cmap = plt.get_cmap(colormap)
     heatmap_rgb = cmap(heatmap_resized)[:, :, :3]
 
     img_float = img_array.astype(np.float32) / 255.0
