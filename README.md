@@ -4,7 +4,7 @@ This guide provides instructions on how to set up the Python environment require
 
 ## Leaderboard & AI-Challenge Webpage
 
-- [Teachable Machine Student Contest Leaderboard](https://nicohambauer.github.io/teachable-machine-student-contest/)
+- [Teachable Machine Student Contest Leaderboard](https://schauera-ur.github.io/teachable-machine-student-contest/)
 
 ## Tool for AI Model Training
 
@@ -14,7 +14,6 @@ This guide provides instructions on how to set up the Python environment require
 
 - Conda (Miniconda or Anaconda)
 - macOS with Apple Silicon (M1/M2)
-
 
 ## Conda Environment Installation with YAML File
 
@@ -41,7 +40,6 @@ This setup ensures that users can quickly get started with the Teachable Machine
    ```bash
    conda create --name teachable-ml python=3.9
    ```
-
 2. **Activate the Environment**
 
    Activate the newly created environment:
@@ -49,7 +47,6 @@ This setup ensures that users can quickly get started with the Teachable Machine
    ```bash
    conda activate teachable-ml
    ```
-
 3. **Install Required Packages**
 
    Install `tensorflow-macos`, `tensorflow-metal` for GPU support, `keras` version 2.13.1, and `numpy` version 1.24.3 using pip:
