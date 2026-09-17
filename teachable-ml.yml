@@ -13,3 +13,7 @@ dependencies:
   - pip:
       - tensorflow==2.15.0
       - tensorflow-metal
+      - opencv-python==4.10.0.84
+      - lime
+      - scikit-image
+      - ttkbootstrap
