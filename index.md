@@ -1,11 +1,10 @@
-# Girls Day – KI-Bildklassifikation 🎉
-**Willkommen** zum **Girls Day** am Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification der Universität Regensburg!
+# Tag der KI – Wie KI Bilder erkennt
 
-**Datum:** 23. April 2026 <br>
-**Beginn:** 14:00 Uhr <br> 
-**Ort:** Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification, Universität Regensburg <br>
+**Willkommen** zum **Tag der KI** im Degginger, veranstaltet vom Lehrstuhl für Maschinelles Lernen, insbesondere Uncertainty Quantification der Universität Regensburg!
 
-<link rel="stylesheet" type="text/css" href="style.css">
+**Datum:** 25. September 2026 <br>
+**Beginn:** 14:00 Uhr <br>
+**Ort:** Degginger, Wahlenstr. 17, 93047 Regensburg <br><link rel="stylesheet" type="text/css" href="style.css">
 
 ## Leaderboard
 
@@ -40,7 +39,7 @@ Heute lernst du, wie eine KI Bilder erkennen kann – ganz ohne Programmierkennt
 1. **Bilder aufnehmen** – Fotografiere vier verschiedene Gegenstände mit der Webcam.
 2. **KI trainieren** – Lass die KI lernen, welcher Gegenstand welcher ist.
 3. **Modell testen** – Schau, wie gut deine KI auf neuen Bildern abschneidet.
-4. **Leaderboard** – Vergleiche deine Genauigkeit mit den anderen Teilnehmerinnen!
+4. **Leaderboard** – Vergleiche deine Genauigkeit mit den anderen Teilnehmenden!
 
 ## Welche Vorkenntnisse brauche ich?
 
