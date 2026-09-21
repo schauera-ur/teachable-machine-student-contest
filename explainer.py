@@ -20,6 +20,20 @@ np.set_printoptions(suppress=True)
 MODELS_DIR = "models"
 NUM_LIME_SAMPLES = 600
 PREVIEW_SIZE = (440, 330)
+MAX_CAMERA_INDEX = 4  # wie viele Kamera-Indizes beim Scannen probiert werden
+
+
+def list_available_cameras(max_index=MAX_CAMERA_INDEX):
+    """Probe camera indices and return the ones that actually deliver a frame."""
+    available = []
+    for index in range(max_index):
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened():
+            ok, _ = cap.read()
+            if ok:
+                available.append(index)
+        cap.release()
+    return available
 
 
 def find_model_dir(username):
@@ -131,6 +145,7 @@ class ExplainerApp(tb.Window):
         self.captured_image = None  # PIL Image once a photo is taken
         self.last_frame = None  # most recent live camera frame (RGB)
         self.camera = None
+        self.camera_index = 0
         self.live = False
         self.canvas_widget = None
 
@@ -158,6 +173,20 @@ class ExplainerApp(tb.Window):
         self.model_combo.pack(side=LEFT, fill=X, expand=YES, padx=(8, 8))
         self.model_combo.bind("<<ComboboxSelected>>", self.on_model_selected)
         tb.Button(model_row, text="🔄", width=3, bootstyle=(SECONDARY, OUTLINE), command=self.refresh_models).pack(
+            side=LEFT
+        )
+
+        # Camera selection
+        camera_row = tb.Frame(outer)
+        camera_row.pack(fill=X, pady=(0, 12))
+        tb.Label(camera_row, text="Kamera:", font=("Helvetica", 12, "bold")).pack(side=LEFT)
+        self.camera_var = tk.StringVar(value="Kamera 0")
+        self.camera_combo = tb.Combobox(
+            camera_row, textvariable=self.camera_var, state="readonly", font=("Helvetica", 12), bootstyle=PRIMARY, width=10
+        )
+        self.camera_combo.pack(side=LEFT, padx=(8, 8))
+        self.camera_combo.bind("<<ComboboxSelected>>", self.on_camera_selected)
+        tb.Button(camera_row, text="🔄", width=3, bootstyle=(SECONDARY, OUTLINE), command=self.scan_cameras).pack(
             side=LEFT
         )
 
@@ -198,7 +227,8 @@ class ExplainerApp(tb.Window):
         self.status_label.pack(anchor=W)
 
         self.refresh_models()
-        self.open_camera()
+        self.open_camera(self.camera_index)
+        self.scan_cameras()
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
     # --- model handling ---
@@ -227,15 +257,55 @@ class ExplainerApp(tb.Window):
             Messagebox.show_error(str(exc), "Fehler beim Laden")
 
     # --- camera handling ---
-    def open_camera(self):
-        self.camera = cv2.VideoCapture(0)
+    def open_camera(self, index=0):
+        self.camera = cv2.VideoCapture(index)
         if not self.camera.isOpened():
-            self.status_var.set("Keine Webcam gefunden. Bitte Zugriff/Anschluss prüfen.")
+            self.status_var.set(f"Keine Webcam an Index {index} gefunden. Bitte Zugriff/Anschluss prüfen.")
             self.camera = None
             return
+        self.camera_index = index
+        self.camera_var.set(f"Kamera {index}")
         self.live = True
         self._update_capture_availability()
         self.update_camera_feed()
+
+    def scan_cameras(self):
+        threading.Thread(target=self._scan_cameras_worker, daemon=True).start()
+
+    def _scan_cameras_worker(self):
+        indices = list_available_cameras()
+        self.after(0, self._on_cameras_found, indices)
+
+    def _on_cameras_found(self, indices):
+        if not indices:
+            indices = [self.camera_index]
+        values = [f"Kamera {i}" for i in indices]
+        self.camera_combo["values"] = values
+        current_label = f"Kamera {self.camera_index}"
+        if current_label not in values:
+            self.camera_var.set(values[0])
+
+    def on_camera_selected(self, event=None):
+        label = self.camera_var.get()
+        index = int(label.replace("Kamera ", ""))
+        if index != self.camera_index:
+            self.switch_camera(index)
+
+    def switch_camera(self, index):
+        new_camera = cv2.VideoCapture(index)
+        if not new_camera.isOpened():
+            new_camera.release()
+            Messagebox.show_error(f"Kamera {index} konnte nicht geöffnet werden.", "Fehler")
+            self.camera_var.set(f"Kamera {self.camera_index}")
+            return
+        if self.camera is not None:
+            self.camera.release()
+        self.camera = new_camera
+        self.camera_index = index
+        # update_camera_feed() reschedules itself via after() as long as self.live
+        # stays True, so it naturally picks up the new camera on its next tick;
+        # if we're currently paused (photo captured), retake_photo() will restart
+        # the loop later and use whatever self.camera is by then.
 
     def _update_capture_availability(self):
         if self.live and self.model is not None:
