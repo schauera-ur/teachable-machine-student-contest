@@ -15,3 +15,5 @@ final_testset/
 old_testset/
 models/
 .vscode/settings.json
+
+.DS_Store

@@ -1,4 +1,4 @@
-name: teach-ml
+name: teachable-ml
 channels:
   - defaults
   - conda-forge
